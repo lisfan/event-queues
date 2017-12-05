@@ -133,6 +133,7 @@ class EventQueues {
    *
    * @since 2.0.0
    * @getter
+   * @readonly
    * @return {string}
    */
   get $separator() {
@@ -144,6 +145,7 @@ class EventQueues {
    *
    * @since 2.0.0
    * @getter
+   * @readonly
    * @return {string}
    */
   get $name() {
@@ -155,6 +157,7 @@ class EventQueues {
    *
    * @since 2.0.0
    * @getter
+   * @readonly
    * @return {boolean}
    */
   get $debug() {
