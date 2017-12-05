@@ -61,11 +61,12 @@ class EventQueues {
    * @memberOf Timer
    * @property {boolean} debug=false - 打印器调试模式是否开启
    * @property {string} name='EventQueues' - 打印器名称标记
+   * @property {string} separator='.' - 子命名空间分割符
    */
   static options = {
-    debug: false, // 开启调试模式
-    name: 'EventQueues', // 调试名称标记
-    separator: '.'  // 默认子命名空间分割符
+    debug: false,
+    name: 'EventQueues',
+    separator: '.'
   }
 
   /**
@@ -74,7 +75,9 @@ class EventQueues {
    * @since 2.0.0
    * @static
    * @param {object} options - 配置选项
-   * @param {boolean} [options.debug] - 调试模式
+   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
+   * @param {string} [options.name='EventQueues'] - 打印器名称标记
+   * @param {string} [options.separator='.'] - 子命名空间分割符
    */
   static config(options) {
     const ctor = this
@@ -88,7 +91,9 @@ class EventQueues {
   /**
    * 构造函数
    * @param {object} options - 配置选项
-   * @param {boolean} [options.debug] - 调试模式
+   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
+   * @param {string} [options.name='EventQueues'] - 打印器名称标记
+   * @param {string} [options.separator='.'] - 子命名空间分割符
    */
   constructor(options) {
     const ctor = this.constructor
