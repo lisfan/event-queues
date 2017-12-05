@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#install">install</a></li><li><a href="global.html#image-loader">image-loader</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EventQueues.html">EventQueues</a><ul class='methods'><li data-type='method'><a href="EventQueues.html#.config">config</a></li><li data-type='method'><a href="EventQueues.html#on">on</a></li><li data-type='method'><a href="EventQueues.html#off">off</a></li><li data-type='method'><a href="EventQueues.html#emit">emit</a></li></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -46,59 +46,63 @@
 
 
     <section class="readme">
-        <article><h1 id="vue-image-loader">vue-image-loader</h1>
-<h2 id="vue-">vue指令插件-图片加载器</h2>
-<p><a href="https://lisfan.github.io/vue-image-loader/">API documentation</a></p>
+        <article><h1 id="event-queues">event-queues</h1>
+<h2 id="-">事件队列管理</h2>
+<p><a href="https://lisfan.github.io/event-queues/">API documentation</a></p>
 <h2 id="feature-">Feature 特性</h2>
 <ul>
-<li>图片在加载之前会使用透明图片抢先占位，接着才进入加载图片逻辑</li>
-<li>图片请求失败时，使用占位图片代替，占位图片也请求失败时，则使用透明图片代替（避免在某些浏览器里会出现'叉'）</li>
+<li>支持多个子命名空间事件队列管理</li>
+<li>支持队列中的异步事件以同步方式执行（未完成）</li>
 </ul>
 <h2 id="detail-">Detail 详情</h2>
 <ul>
-<li>[注意]：若图片地址需要在请求接口完成后才能取到真实地址，则需要保证接口请求完成再触发该指令，否则会因为空地址而请求了占位图片</li>
-<li>支持img标签或者非img标签的背景图片加载</li>
-<li>图片地址变化时，自动响应图片更新</li>
-<li>若图片已加载过，那么下一次再加载该图片时会直接显示，会忽略图片加载的动效，你可以通过设置(force修饰符)来决定是否强制启用每次动效载入</li>
-<li>可选的自定义目标DOM的宽高尺寸，宽高之间使用<code>x</code>符风格，（只指定宽度时，则高度等同于宽度)，如：v-image-loader:300x400，（假设UI稿尺寸是基于设备物理尺寸放大2倍的基础上设计的，一般直接取ui稿的尺寸即可，内部会根据remRatio配置项自动计算成rem单位）</li>
-<li>可选的自定义图片载入动效类名，如：v-image-loader=&quot;'mj-ani-fadeIn'&quot;</li>
-<li>动画样式的规则参考了<code>vue</code>的<code>transition</code>组件定义过渡的方式，动画样式定义时有如下规则:<ul>
-<li>图片加载时DOM更改样式为'mj-ani-fadeIn-enter'，可以在这个类名上定义一些基础样式</li>
-<li>图片加载过程中DOM更改为'mj-ani-fadeIn-enter-active'，可以在这个类名上定义真正需要动画的样式</li>
-<li>图片加载结束后更改为'mj-ani-fadeIn-enter-end'，（这么做的原因是，css3动效的触发条件是这一次的动效必须与上一次的动画不同，所以需要有个变化，而我们又需要有一个动效结束后固定样式，所以如果没有end这个类的话，就无法体现与上一次的不同）</li>
-<li>暂时没有图片移除动效</li>
-</ul>
-</li>
+<li>绑定在某个子命名空间上的事件，会同时绑定在主命名空间上</li>
+<li>移除主命名空间上的队列时，会移除该命名空间下所有的事件队项</li>
+<li>移除子命名空间上的队列时，只移除该子命名空间下的事件队列，并不影响当时填加到主命名空间下的事件队列</li>
+<li>执行命名空间上的队列时，会按顺序执行事件，调用时传入的所有参数会作为第一个事件的参数，之后该事件的执行结果会作为下一个事件的参数提供，所有队列执行完毕后，返回Promise</li>
 </ul>
 <h2 id="install-">Install 安装</h2>
-<pre class="prettyprint source lang-bash"><code>npm install -S @~lisfan/vue-image-loader</code></pre><h2 id="usage-">Usage 起步</h2>
-<pre class="prettyprint source lang-js"><code>import Vue from 'vue'
-import VueImageLoader from '@~lisfan/vue-image-loader'
+<pre class="prettyprint source lang-bash"><code>npm install -S @~lisfan/event-queues</code></pre><h2 id="usage-">Usage 起步</h2>
+<pre class="prettyprint source lang-js"><code>import Queues from '@~lisfan/queues'
 
-// 注册指令
-// 以下是默认值
-Vue.use(VueImageLoader,{
-    debug: false, // 关闭调试模式
-    remRatio: 100, // rem和px的比例
-    animate: true, // 开启动效
-    force: false, // 每次加载动效
-    placeholders:{ // 内置一些占位图片修饰符，进行快速引用
-      avatar: 'path/to/image'
-    }
-})</code></pre><pre class="prettyprint source lang-html"><code>// 在img标签上使用，会被当成src图片
-// 调用格式：&lt;img :placeholder='自定义占位图片地址' :image-src=&quot;请求图片地址&quot; v-image-loader:[宽x高].[强制每次加载动效].[调用内置占位图片]='动效类名' />
+const queues = new Queues({
+  debug: true, // 开始日志调式，默认false
+  name: 'custom', // 设置日志器名称标记，默认值为'EventQueues'
+  separator: '.', // 子命名空间的分割符，默认'.'
+})
 
-// 最简单的调用，若图片不存在，则调用内置的占位图片
-&lt;img :image-src=&quot;http://domain/src.png&quot; v-image-loader.avatar />
+// 绑定主命名空间
+queues.on('name', (val) => {
+  console.log('name', val)
+})
+// 绑定具体的子命名空间
+queues.on('name.subname', (preResult) => {
+  console.log('name.subname', preResult)
+})
 
-// 自定义占位图片，同时设置了图片容器的高宽，并使用了一个渐现动画效果(需要自定义动效样式)
-&lt;img :placeholder='http://domain/ph.png' :image-src=&quot;http://domain/src.png&quot; v-image-loader:500x300=&quot;'mj-ani-fadeIn'&quot; />
+// 绑定多个具体的子命名空间
+queues.on('name.subname.subname2', (preResult) => {
+  console.log('name.subname.subname2', preResult)
+})
 
-// 实际图片已下载完毕，但是我想让每次路由切换重新回到这个页面的使用，这个图片加载都触发翻转动画效果(需要自定义动效样式)
-&lt;img :image-src=&quot;http://domain/src.png&quot; v-image-loader.avatar.force=&quot;'mj-ani-flip'&quot; />
+// 指定事件函数
+const specFun = () => {
+  console.log('specFun')
+}
 
-// 支持在非image标签上使用：区别在于会被当成背景图
-&lt;!img :image-src=&quot;http://domain/src.png&quot; v-image-loader.avatar>&lt;/!img></code></pre></article>
+// 绑定指定事件
+queues.on('name.subname3', specFun)
+
+// 移除该子命名空间下指定事件队列项
+queues.off('name.subname3', specFun)
+
+// 移除该子命名空间下所有队列
+queues.off('name.subname')
+
+// 执行主命名空间下的队列事件
+queues.emit('name', 'firstArg', 'secondArg').then((result) => {
+  console.log('emit result', result)
+})</code></pre></article>
     </section>
 
 
@@ -114,7 +118,7 @@ Vue.use(VueImageLoader,{
 <header>
     
         <h2>
-        index.js
+        event-queues.js
         </h2>
         
     
@@ -130,13 +134,13 @@ Vue.use(VueImageLoader,{
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line1">line 1</a>
+        <a href="event-queues.js.html">event-queues.js</a>, <a href="event-queues.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
     
     <dt class="tag-version">Version:</dt>
-    <dd class="tag-version"><ul class="dummy"><li>1.2.0</li></ul></dd>
+    <dd class="tag-version"><ul class="dummy"><li>2.0.0</li></ul></dd>
     
 
     
@@ -179,7 +183,7 @@ Vue.use(VueImageLoader,{
 
 
         
-            <div class="description"><p>图片加载器</p></div>
+            <div class="description"><p>事件队列管理</p></div>
         
 
         
@@ -215,7 +219,7 @@ Vue.use(VueImageLoader,{
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Nov 07 2017 15:49:43 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Dec 05 2017 16:06:47 GMT+0800 (CST) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
