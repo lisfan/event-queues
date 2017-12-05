@@ -80,12 +80,12 @@ class EventQueues {
    * @param {string} [options.separator='.'] - 子命名空间分割符
    */
   static config(options) {
-    const ctor = this
-
-    ctor.options = {
-      ...ctor.options,
+    EventQueues.options = {
+      ...EventQueues.options,
       ...options
     }
+
+    return EventQueues
   }
 
   /**
@@ -96,10 +96,8 @@ class EventQueues {
    * @param {string} [options.separator='.'] - 子命名空间分割符
    */
   constructor(options) {
-    const ctor = this.constructor
-
     this.$options = {
-      ...ctor.options,
+      ...EventQueues.options,
       ...options
     }
 
