@@ -298,8 +298,7 @@ class EventQueues {
 
         // 该命名空间不存在
         if (!validation.isPlainObject(this.$queues[mainNamespace])) {
-          reject(false)
-          return this
+          return resolve()
         }
 
         let queuesNamespaceList
@@ -315,8 +314,7 @@ class EventQueues {
           // 不存在，则不执行
           if (!validation.isPlainObject(this.$queues[mainNamespace][subQueueName])
             || !validation.isArray(this.$queues[mainNamespace][subQueueName].events)) {
-            reject(false)
-            return
+            return resolve()
           }
 
           execResult = this.$queues[mainNamespace][subQueueName].events.reduce((result, done, index) => {
@@ -328,10 +326,10 @@ class EventQueues {
               : done.call(null, result)
           }, null)
 
-          resolve(execResult)
+          return resolve(execResult)
         })
       } catch (err) {
-        reject(err)
+        return reject(err)
       }
     })
   }
