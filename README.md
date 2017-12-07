@@ -25,25 +25,25 @@ npm install -S @~lisfan/event-queues
 ## Usage 起步
 
 ```js
-import Queues from '@~lisfan/queues'
+import EventQueues from '@~lisfan/eventQueues'
 
-const queues = new Queues({
+const eventQueues = new EventQueues({
   debug: true, // 开始日志调式，默认false
   name: 'custom', // 设置日志器名称标记，默认值为'EventQueues'
   separator: '.', // 子命名空间的分割符，默认'.'
 })
 
 // 绑定主命名空间
-queues.on('name', (val) => {
+eventQueues.on('name', (val) => {
   console.log('name', val)
 })
 // 绑定具体的子命名空间
-queues.on('name.subname', (preResult) => {
+eventQueues.on('name.subname', (preResult) => {
   console.log('name.subname', preResult)
 })
 
 // 绑定多个具体的子命名空间
-queues.on('name.subname.subname2', (preResult) => {
+eventQueues.on('name.subname.subname2', (preResult) => {
   console.log('name.subname.subname2', preResult)
 })
 
@@ -53,16 +53,16 @@ const specFun = () => {
 }
 
 // 绑定指定事件
-queues.on('name.subname3', specFun)
+eventQueues.on('name.subname3', specFun)
 
 // 移除该子命名空间下指定事件队列项
-queues.off('name.subname3', specFun)
+eventQueues.off('name.subname3', specFun)
 
 // 移除该子命名空间下所有队列
-queues.off('name.subname')
+eventQueues.off('name.subname')
 
 // 执行主命名空间下的队列事件
-queues.emit('name', 'firstArg', 'secondArg').then((result) => {
+eventQueues.emit('name', 'firstArg', 'secondArg').then((result) => {
   console.log('emit result', result)
 })
 ```
