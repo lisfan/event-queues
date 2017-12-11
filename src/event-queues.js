@@ -76,7 +76,7 @@ class EventQueues {
    * @since 2.0.0
    * @static
    * @readonly
-   * @memberOf Timer
+   * @memberOf EventQueues
    * @property {boolean} debug=false - 打印器调试模式是否开启
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
