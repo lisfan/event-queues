@@ -16,7 +16,7 @@ const _actions = {
    * 分割队列命名空间
    * @param {EventQueues} self - 本实本身
    * @param {string} queueName - 队列名称
-   * @returns {Array}
+   * @return {Array}
    */
   splitQueueName(self, queueName) {
     // 命名空间进行处理
@@ -41,7 +41,7 @@ const _actions = {
    * 初始化主命名空间集合
    * @param {EventQueues} self - 本实本身
    * @param {string} namespace - 主命名空间
-   * @returns {object}
+   * @return {object}
    */
   initMainNamespace(self, namespace) {
     if (!validation.isPlainObject(self.$queues[namespace])) {
@@ -55,7 +55,7 @@ const _actions = {
    * @param {EventQueues} self - 本实本身
    * @param {string} mainNamespace - 主命名空间
    * @param {string} subNamespace - 子命名空间
-   * @returns {object}
+   * @return {object}
    */
   initSubNamespace(self, mainNamespace, subNamespace) {
     if (!validation.isPlainObject(self.$queues[mainNamespace][subNamespace])) {
