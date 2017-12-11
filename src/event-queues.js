@@ -12,13 +12,18 @@ import Logger from '@~lisfan/logger'
 const PRIMARY_NAMESPACE = '__pri__'
 
 const _actions = {
+  /**
+   * 分割队列命名空间
+   * @param {EventQueues} self - 本实本身
+   * @param {string} queueName - 队列名称
+   * @returns {Array}
+   */
   splitQueueName(self, queueName) {
-    // 处理空白符
-    // 处理头和尾留有.符号的情况
-    // 处理.符号多个的场景
-    // 处理子命名空间空白符
-    // ===
-    // 移除多个.符号的情况
+    // 命名空间进行处理
+    // 1. 处理空白符
+    // 2. 处理.符号多个的场景
+    // 3. 处理头和尾留有.符号的情况
+    // 4. 处理子命名空间空白符
 
     const separator = self.$separator
     const uniqSeparatorRegExp = new RegExp(`\${separator}+`, 'g')
@@ -32,6 +37,12 @@ const _actions = {
       return name.trim()
     })
   },
+  /**
+   * 初始化主命名空间集合
+   * @param {EventQueues} self - 本实本身
+   * @param {string} namespace - 主命名空间
+   * @returns {object}
+   */
   initMainNamespace(self, namespace) {
     if (!validation.isPlainObject(self.$queues[namespace])) {
       return {}
@@ -39,6 +50,13 @@ const _actions = {
 
     return self.$queues[namespace]
   },
+  /**
+   * 初始化子命名空间集合
+   * @param {EventQueues} self - 本实本身
+   * @param {string} mainNamespace - 主命名空间
+   * @param {string} subNamespace - 子命名空间
+   * @returns {object}
+   */
   initSubNamespace(self, mainNamespace, subNamespace) {
     if (!validation.isPlainObject(self.$queues[mainNamespace][subNamespace])) {
       return {
