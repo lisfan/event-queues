@@ -81,10 +81,12 @@ class EventQueues {
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
    */
-  static options = {
-    debug: false,
-    name: 'EventQueues',
-    separator: '.'
+  static get options() {
+    return {
+      debug: false,
+      name: 'EventQueues',
+      separator: '.'
+    }
   }
 
   /**
