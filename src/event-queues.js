@@ -207,7 +207,6 @@ class EventQueues {
     // 如果事件使用了子命名空间定义，则同时定义在主命名空间和子命名空间下
     const queuesNamespaceList = [PRIMARY_NAMESPACE].concat(queuesNameList.slice(1))
 
-    this._logger.log('on success! name list:', queuesNamespaceList)
     queuesNamespaceList.forEach((subQueueName) => {
       this.$queues[mainNamespace][subQueueName] = _actions.initSubNamespace(this, mainNamespace, subQueueName)
 
@@ -215,8 +214,7 @@ class EventQueues {
       subQueue.events.push(done)
       subQueue.isAsync.push(!!isAsync)
 
-      this._logger.log(`on success! (${subQueueName}) events list:`, subQueue.events)
-      this._logger.log(`on success! (${subQueueName}) isAsync list:`, subQueue.isAsync)
+      this._logger.log(`bind on success (${subQueueName})!`)
     })
 
     return this
@@ -234,7 +232,7 @@ class EventQueues {
 
     // 该命名空间不存在
     if (!validation.isPlainObject(this.$queues[mainNamespace])) {
-      this._logger.warn(`off faild! the (${mainNamespace}) main namespace is't exist.`)
+      this._logger.warn(`bind off faild! the (${mainNamespace}) main namespace is't exist.`)
       return this
     }
 
@@ -252,11 +250,10 @@ class EventQueues {
           return cb === done
         })
 
-        this._logger.log(`off success! (${PRIMARY_NAMESPACE}) events list:`, subQueue.events)
-        this._logger.log(`off success! (${PRIMARY_NAMESPACE}) isAsync list:`, subQueue.isAsync)
+        this._logger.log(`bind off success (${PRIMARY_NAMESPACE})!`)
       } else {
         this.$queues[mainNamespace] = null
-        this._logger.log(`off success! remove all queues of the (${mainNamespace}) main namespace`, this.$queues)
+        this._logger.log(`bind off success! remove all queues of the (${mainNamespace}) main namespace`)
       }
 
       return this
@@ -266,7 +263,7 @@ class EventQueues {
     queuesNamespaceList.forEach((subQueueName) => {
       if (!validation.isPlainObject(this.$queues[mainNamespace][subQueueName])
         || !validation.isArray(this.$queues[mainNamespace][subQueueName].events)) {
-        this._logger.warn(`off faild! the (${subQueueName}) sub namespace is't exist.`)
+        this._logger.warn(`bind off faild! the (${subQueueName}) sub namespace is't exist.`)
         return
       }
 
@@ -286,8 +283,7 @@ class EventQueues {
 
         subQueue.isAsync = isAsync
 
-        this._logger.log(`off success! (${subQueueName}) events list:`, subQueue.events)
-        this._logger.log(`off success! (${subQueueName}) isAsync list:`, subQueue.isAsync)
+        this._logger.log(`bind off success (${subQueueName})!`)
       } else {
         // 如果当前子命名空间是主命名空间不作删除
         if (subQueueName === PRIMARY_NAMESPACE) {
@@ -295,7 +291,7 @@ class EventQueues {
         }
 
         this.$queues[mainNamespace][subQueueName] = null
-        this._logger.log(`off success! remove all queues of the (${subQueueName}) sub namespace`, this.$queues[mainNamespace])
+        this._logger.log(`bind off success! remove all queues of the (${subQueueName}) sub namespace`)
       }
     })
 
