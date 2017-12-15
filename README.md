@@ -25,7 +25,7 @@ npm install -S @~lisfan/event-queues
 ## Usage 起步
 
 ```js
-import EventQueues from '@~lisfan/eventQueues'
+import EventQueues from '@~lisfan/event-queues'
 
 const eventQueues = new EventQueues({
   debug: true, // 开始日志调式，默认false

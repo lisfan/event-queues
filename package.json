@@ -1,6 +1,6 @@
 {
   "name": "@~lisfan/event-queues",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "事件队列的管理模块",
   "main": "index.js",
   "scripts": {
