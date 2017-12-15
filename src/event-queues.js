@@ -1,7 +1,7 @@
 /**
  * @file 事件队列管理
  * @author lisfan <goolisfan@gmail.com>
- * @version 2.0.0
+ * @version 1.0.0
  * @licence MIT
  */
 
@@ -24,7 +24,6 @@ const _actions = {
     // 2. 处理.符号多个的场景
     // 3. 处理头和尾留有.符号的情况
     // 4. 处理子命名空间空白符
-
     const separator = self.$separator
     const uniqSeparatorRegExp = new RegExp(`\${separator}+`, 'g')
     // 提取中间内容
@@ -44,11 +43,9 @@ const _actions = {
    * @returns {object}
    */
   initMainNamespace(self, namespace) {
-    if (!validation.isPlainObject(self.$queues[namespace])) {
-      return {}
-    }
-
-    return self.$queues[namespace]
+    return !validation.isPlainObject(self.$queues[namespace])
+      ? {}
+      : self.$queues[namespace]
   },
   /**
    * 初始化子命名空间集合
@@ -58,22 +55,26 @@ const _actions = {
    * @returns {object}
    */
   initSubNamespace(self, mainNamespace, subNamespace) {
-    if (!validation.isPlainObject(self.$queues[mainNamespace][subNamespace])) {
-      return {
+    return !validation.isPlainObject(self.$queues[mainNamespace][subNamespace])
+      ? {
         events: [],
         isAsync: []
       }
-    }
-    return self.$queues[mainNamespace][subNamespace]
+      : self.$queues[mainNamespace][subNamespace]
   },
-
 }
 
+/**
+ * @classdesc
+ * 事件队列管理类
+ *
+ * @class
+ */
 class EventQueues {
   /**
    * 默认配置选项
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @static
    * @readonly
    * @memberOf EventQueues
@@ -81,18 +82,16 @@ class EventQueues {
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
    */
-  static get options() {
-    return {
-      debug: false,
-      name: 'EventQueues',
-      separator: '.'
-    }
+  static options = {
+    debug: false,
+    name: 'EventQueues',
+    separator: '.'
   }
 
   /**
    * 更新默认配置选项
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @static
    * @param {object} options - 配置选项
    * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
@@ -130,7 +129,7 @@ class EventQueues {
   /**
    * 日志打印器，方便调试
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @private
    */
   _logger = undefined
@@ -138,7 +137,7 @@ class EventQueues {
   /**
    * 实例配置项
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @readonly
    */
   $options = undefined
@@ -146,7 +145,7 @@ class EventQueues {
   /**
    * 事件队列集合
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @readonly
    */
   $queues = {}
@@ -154,7 +153,7 @@ class EventQueues {
   /**
    * 获取实例配置的分割符
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @getter
    * @readonly
    * @returns {string}
@@ -166,7 +165,7 @@ class EventQueues {
   /**
    * 获取打印器实例的名称标记
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @getter
    * @readonly
    * @returns {string}
@@ -178,7 +177,7 @@ class EventQueues {
   /**
    * 获取实例的调试配置项
    *
-   * @since 2.0.0
+   * @since 1.0.0
    * @getter
    * @readonly
    * @returns {boolean}
@@ -317,15 +316,9 @@ class EventQueues {
           return resolve()
         }
 
-        let queuesNamespaceList
-        if (queuesNameList.length === 1) {
-          queuesNamespaceList = [PRIMARY_NAMESPACE]
-        } else {
-          queuesNamespaceList = queuesNameList.slice(1)
-        }
+        let queuesNamespaceList = queuesNameList.length === 1 ? [PRIMARY_NAMESPACE] : queuesNameList.slice(1)
 
         // 执行后的最后结果
-        let execResult
         queuesNamespaceList.forEach((subQueueName) => {
           // 不存在，则不执行
           if (!validation.isPlainObject(this.$queues[mainNamespace][subQueueName])
@@ -333,10 +326,12 @@ class EventQueues {
             return resolve()
           }
 
-          execResult = this.$queues[mainNamespace][subQueueName].events.reduce((result, done, index) => {
+          let execResult = this.$queues[mainNamespace][subQueueName].events.reduce((result, done, index) => {
             // 如果done不是函数，则将上一个结果继续返回
-            if (!validation.isFunction(done)) return result
-
+            if (!validation.isFunction(done)) {
+              return result
+            }
+            
             return index === 0
               ? done.apply(null, args)
               : done.call(null, result)
