@@ -14,8 +14,12 @@ const PRIMARY_NAMESPACE = '__pri__'
 const _actions = {
   /**
    * 分割队列命名空间
+   *
+   * @since 1.0.0
+   *
    * @param {EventQueues} self - 本实本身
    * @param {string} queueName - 队列名称
+   *
    * @returns {Array}
    */
   splitQueueName(self, queueName) {
@@ -38,8 +42,12 @@ const _actions = {
   },
   /**
    * 初始化主命名空间集合
+   *
+   * @since 1.0.0
+   *
    * @param {EventQueues} self - 本实本身
    * @param {string} namespace - 主命名空间
+   *
    * @returns {object}
    */
   initMainNamespace(self, namespace) {
@@ -49,9 +57,13 @@ const _actions = {
   },
   /**
    * 初始化子命名空间集合
+   *
+   * @since 1.0.0
+   *
    * @param {EventQueues} self - 本实本身
    * @param {string} mainNamespace - 主命名空间
    * @param {string} subNamespace - 子命名空间
+   *
    * @returns {object}
    */
   initSubNamespace(self, mainNamespace, subNamespace) {
@@ -75,9 +87,11 @@ class EventQueues {
    * 默认配置选项
    *
    * @since 1.0.0
+   *
    * @static
    * @readonly
    * @memberOf EventQueues
+   *
    * @property {boolean} debug=false - 打印器调试模式是否开启
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
@@ -92,7 +106,7 @@ class EventQueues {
    * 更新默认配置选项
    *
    * @since 1.0.0
-   * @static
+   *
    * @param {object} options - 配置选项
    * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
    * @param {string} [options.name='EventQueues'] - 打印器名称标记
@@ -109,6 +123,7 @@ class EventQueues {
 
   /**
    * 构造函数
+   *
    * @param {object} options - 配置选项
    * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
    * @param {string} [options.name='EventQueues'] - 打印器名称标记
@@ -130,6 +145,7 @@ class EventQueues {
    * 日志打印器，方便调试
    *
    * @since 1.0.0
+   *
    * @private
    */
   _logger = undefined
@@ -138,6 +154,7 @@ class EventQueues {
    * 实例配置项
    *
    * @since 1.0.0
+   *
    * @readonly
    */
   $options = undefined
@@ -146,6 +163,7 @@ class EventQueues {
    * 事件队列集合
    *
    * @since 1.0.0
+   *
    * @readonly
    */
   $queues = {}
@@ -154,8 +172,9 @@ class EventQueues {
    * 获取实例配置的分割符
    *
    * @since 1.0.0
+   *
    * @getter
-   * @readonly
+   *
    * @returns {string}
    */
   get $separator() {
@@ -166,8 +185,9 @@ class EventQueues {
    * 获取打印器实例的名称标记
    *
    * @since 1.0.0
+   *
    * @getter
-   * @readonly
+   *
    * @returns {string}
    */
   get $name() {
@@ -178,8 +198,9 @@ class EventQueues {
    * 获取实例的调试配置项
    *
    * @since 1.0.0
+   *
    * @getter
-   * @readonly
+   *
    * @returns {boolean}
    */
   get $debug() {
@@ -188,10 +209,14 @@ class EventQueues {
 
   /**
    * 绑定队列事件
+   *
+   * @since 1.0.0
+   *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
    * @param {function} done - 事件
    * @param {boolean} [isAsync=false] - 是否为异步，如果是异步，则需要等待该事件执行完毕，再执行一个
    * 如果异步事件的执行结果不依赖与上一个的执行结果，则可以不传入该字段
+   *
    * @returns {EventQueues}
    */
   on(name, done, isAsync = false) {
@@ -223,8 +248,12 @@ class EventQueues {
 
   /**
    * 移除队列事件
+   *
+   * @since 1.0.0
+   *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
    * @param {function} [done] - 移除指定的事件，若未指定，则移除该命名空间下所有事件队列
+   *
    * @returns {EventQueues}
    */
   off(name, done) {
@@ -301,9 +330,13 @@ class EventQueues {
 
   /**
    * 执行队列事件，上一个队列项的执行结果将作为下一个队列项的参数传入
+   *
+   * @since 1.0.0
+   *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
    * @param {array} args - 参数列表，会将参数列表作为第一个事件队列的参数传入
-   * @returns {EventQueues}
+   *
+   * @returns {Promise}
    */
   emit(name, ...args) {
     return new Promise((resolve, reject) => {
@@ -331,7 +364,7 @@ class EventQueues {
             if (!validation.isFunction(done)) {
               return result
             }
-            
+
             return index === 0
               ? done.apply(null, args)
               : done.call(null, result)
