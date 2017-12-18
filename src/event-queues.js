@@ -156,6 +156,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @readonly
+   * @type {object}
    */
   $options = undefined
 
@@ -165,6 +166,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @readonly
+   * @type {object}
    */
   $queues = {}
 
@@ -174,8 +176,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {string}
+   * @type {string}
    */
   get $separator() {
     return this.$options.separator
@@ -187,8 +190,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {string}
+   * @type {string}
    */
   get $name() {
     return this._logger.$name
@@ -200,8 +204,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {boolean}
+   * @type {boolean}
    */
   get $debug() {
     return this._logger.$debug
@@ -294,7 +299,7 @@ class EventQueues {
       if (!validation.isPlainObject(this.$queues[mainNamespace][subQueueName])
         || !validation.isArray(this.$queues[mainNamespace][subQueueName].events)) {
         this._logger.warn(`bind off faild! the (${subQueueName}) sub namespace is't exist.`)
-        return
+        return this
       }
 
       // 存在命名空间
@@ -332,6 +337,8 @@ class EventQueues {
    * 执行队列事件，上一个队列项的执行结果将作为下一个队列项的参数传入
    *
    * @since 1.0.0
+   *
+   * @async
    *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
    * @param {array} args - 参数列表，会将参数列表作为第一个事件队列的参数传入
