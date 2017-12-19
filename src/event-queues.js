@@ -92,13 +92,14 @@ class EventQueues {
    * @readonly
    * @memberOf EventQueues
    *
+   * @type {object}
    * @property {boolean} debug=false - 打印器调试模式是否开启
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
    */
   static options = {
-    debug: false,
     name: 'EventQueues',
+    debug: false,
     separator: '.'
   }
 
@@ -107,10 +108,9 @@ class EventQueues {
    *
    * @since 1.0.0
    *
-   * @param {object} options - 配置选项
-   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
-   * @param {string} [options.name='EventQueues'] - 打印器名称标记
-   * @param {string} [options.separator='.'] - 子命名空间分割符
+   * @see EventQueues.options
+   *
+   * @param {object} options - 配置选项见{@link EventQueues.options}
    */
   static config(options) {
     EventQueues.options = {
@@ -124,10 +124,9 @@ class EventQueues {
   /**
    * 构造函数
    *
-   * @param {object} options - 配置选项
-   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
-   * @param {string} [options.name='EventQueues'] - 打印器名称标记
-   * @param {string} [options.separator='.'] - 子命名空间分割符
+   * @see EventQueues.options
+   *
+   * @param {object} options - 配置选项见{@link EventQueues.options}
    */
   constructor(options) {
     this.$options = {
@@ -156,6 +155,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @readonly
+   *
    * @type {object}
    */
   $options = undefined
@@ -218,7 +218,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
-   * @param {function} done - 事件
+   * @param {function} done - 事件句柄
    * @param {boolean} [isAsync=false] - 是否为异步，如果是异步，则需要等待该事件执行完毕，再执行一个
    * 如果异步事件的执行结果不依赖与上一个的执行结果，则可以不传入该字段
    *
