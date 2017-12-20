@@ -92,13 +92,14 @@ class EventQueues {
    * @readonly
    * @memberOf EventQueues
    *
+   * @type {object}
    * @property {boolean} debug=false - 打印器调试模式是否开启
    * @property {string} name='EventQueues' - 打印器名称标记
    * @property {string} separator='.' - 子命名空间分割符
    */
   static options = {
-    debug: false,
     name: 'EventQueues',
+    debug: false,
     separator: '.'
   }
 
@@ -107,10 +108,11 @@ class EventQueues {
    *
    * @since 1.0.0
    *
-   * @param {object} options - 配置选项
-   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
-   * @param {string} [options.name='EventQueues'] - 打印器名称标记
-   * @param {string} [options.separator='.'] - 子命名空间分割符
+   * @see EventQueues.options
+   *
+   * @param {object} options - 配置选项见{@link EventQueues.options}
+   *
+   * @returns {EventQueues}
    */
   static config(options) {
     EventQueues.options = {
@@ -124,10 +126,9 @@ class EventQueues {
   /**
    * 构造函数
    *
-   * @param {object} options - 配置选项
-   * @param {boolean} [options.debug=false] - 打印器调试模式是否开启
-   * @param {string} [options.name='EventQueues'] - 打印器名称标记
-   * @param {string} [options.separator='.'] - 子命名空间分割符
+   * @see EventQueues.options
+   *
+   * @param {object} options - 配置选项见{@link EventQueues.options}
    */
   constructor(options) {
     this.$options = {
@@ -151,11 +152,13 @@ class EventQueues {
   _logger = undefined
 
   /**
-   * 实例配置项
+   * 实例初始配置项
    *
    * @since 1.0.0
    *
    * @readonly
+   *
+   * @type {object}
    */
   $options = undefined
 
@@ -165,6 +168,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @readonly
+   * @type {object}
    */
   $queues = {}
 
@@ -174,8 +178,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {string}
+   * @type {string}
    */
   get $separator() {
     return this.$options.separator
@@ -187,8 +192,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {string}
+   * @type {string}
    */
   get $name() {
     return this._logger.$name
@@ -200,8 +206,9 @@ class EventQueues {
    * @since 1.0.0
    *
    * @getter
+   * @readonly
    *
-   * @returns {boolean}
+   * @type {boolean}
    */
   get $debug() {
     return this._logger.$debug
@@ -213,7 +220,7 @@ class EventQueues {
    * @since 1.0.0
    *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
-   * @param {function} done - 事件
+   * @param {function} done - 事件句柄
    * @param {boolean} [isAsync=false] - 是否为异步，如果是异步，则需要等待该事件执行完毕，再执行一个
    * 如果异步事件的执行结果不依赖与上一个的执行结果，则可以不传入该字段
    *
@@ -294,7 +301,7 @@ class EventQueues {
       if (!validation.isPlainObject(this.$queues[mainNamespace][subQueueName])
         || !validation.isArray(this.$queues[mainNamespace][subQueueName].events)) {
         this._logger.warn(`bind off faild! the (${subQueueName}) sub namespace is't exist.`)
-        return
+        return this
       }
 
       // 存在命名空间
@@ -332,6 +339,8 @@ class EventQueues {
    * 执行队列事件，上一个队列项的执行结果将作为下一个队列项的参数传入
    *
    * @since 1.0.0
+   *
+   * @async
    *
    * @param {string} name - 命名空间名称，支持多个子命名空间，用'.'号分隔，如mainname1.subname2.subname3
    * @param {array} args - 参数列表，会将参数列表作为第一个事件队列的参数传入
