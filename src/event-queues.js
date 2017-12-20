@@ -111,6 +111,8 @@ class EventQueues {
    * @see EventQueues.options
    *
    * @param {object} options - 配置选项见{@link EventQueues.options}
+   *
+   * @returns {EventQueues}
    */
   static config(options) {
     EventQueues.options = {
@@ -150,7 +152,7 @@ class EventQueues {
   _logger = undefined
 
   /**
-   * 实例配置项
+   * 实例初始配置项
    *
    * @since 1.0.0
    *
