@@ -1,8 +1,5 @@
 /**
  * @file 事件队列管理
- * @author lisfan <goolisfan@gmail.com>
- * @version 1.0.0
- * @licence MIT
  */
 
 import validation from '@~lisfan/validation'
