@@ -112,12 +112,13 @@ class EventQueues {
    * @returns {EventQueues}
    */
   static config(options) {
-    EventQueues.options = {
-      ...EventQueues.options,
+    const ctr = this
+    ctr.options = {
+      ...ctr.options,
       ...options
     }
 
-    return EventQueues
+    return ctr
   }
 
   /**
@@ -128,8 +129,9 @@ class EventQueues {
    * @param {object} options - 配置选项见{@link EventQueues.options}
    */
   constructor(options) {
+    const ctr = this.constructor
     this.$options = {
-      ...EventQueues.options,
+      ...ctr.options,
       ...options
     }
 
