@@ -90,8 +90,8 @@ class EventQueues {
    * @memberOf EventQueues
    *
    * @type {object}
-   * @property {boolean} debug=false - 打印器调试模式是否开启
-   * @property {string} name='EventQueues' - 打印器名称标记
+   * @property {string} name='EventQueues' - 日志打印器名称标记
+   * @property {boolean} debug=false - 日志打印器调试模式开启状态
    * @property {string} separator='.' - 子命名空间分割符
    */
   static options = {
@@ -112,13 +112,13 @@ class EventQueues {
    * @returns {EventQueues}
    */
   static config(options) {
-    const ctr = this
-    ctr.options = {
-      ...ctr.options,
+    const ctor = this
+    ctor.options = {
+      ...ctor.options,
       ...options
     }
 
-    return ctr
+    return ctor
   }
 
   /**
@@ -129,9 +129,9 @@ class EventQueues {
    * @param {object} options - 配置选项见{@link EventQueues.options}
    */
   constructor(options) {
-    const ctr = this.constructor
+    const ctor = this.constructor
     this.$options = {
-      ...ctr.options,
+      ...ctor.options,
       ...options
     }
 
